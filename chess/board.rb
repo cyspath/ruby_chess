@@ -14,7 +14,11 @@ class Board
   def render
     system ("clear")
     puts # spacer
+    puts "    A  B  C  D  E  F  G  H".colorize(:color => :light_black)
+
+    row_number = 8
     @grid.each_with_index do |row, row_idx|
+      print (" " + row_number.to_s + " ").colorize(:color => :light_black)
       row.each_with_index do |square, square_idx|
         if [row_idx, square_idx] == @cursor_pos
           if square.color == :white
@@ -37,9 +41,16 @@ class Board
         end
 
       end
+      print (" " + row_number.to_s + " ").colorize(:color => :light_black)
+      row_number -= 1
       puts
     end
+    puts "    A  B  C  D  E  F  G  H".colorize(:color => :light_black)
     puts # spacer
+    puts # spacer
+    puts # spacer
+    puts # spacer
+
   end
 
 
@@ -118,8 +129,9 @@ class Board
   def possible_moves_has_end_pos?(start_pos, end_pos)
     row_end, col_end = end_pos
     chosen_piece = current_piece(start_pos)
+    target = current_piece(end_pos)
     # puts "chosen piece is #{chosen_piece.icon}, all possible moves: #{chosen_piece.moves}"
-    return true if chosen_piece.moves.include?(end_pos)
+    return true if chosen_piece.moves.include?(end_pos) && target.color != chosen_piece.color
     false
   end
 

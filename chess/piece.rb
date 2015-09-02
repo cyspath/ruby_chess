@@ -70,6 +70,17 @@ class Piece
     false
   end
 
+  def filter_occupied_target_pos_from_all_possible_moves(all_moves)
+    # make sure valid_moves returns only pos array with square that are not occupied
+    arr = []
+    all_moves.each do |pos|
+      if @reference_board.grid[pos[0]][pos[1]].color != @color
+        arr.push(pos)
+      end
+    end
+    return arr
+  end
+
   def valid_moves
     # iterate through grid
     # for each piece, deep dup board
@@ -84,7 +95,7 @@ class Piece
     end
     all_possible_moves.reject! { |pos| positions_to_remove.include?(pos) }
     # puts "#{@icon}: #{all_possible_moves} to get out of check"
-    all_possible_moves
+    filter_occupied_target_pos_from_all_possible_moves(all_possible_moves)
   end
 
   def valid_piece

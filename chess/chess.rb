@@ -1,12 +1,18 @@
 require 'io/console'
 require_relative 'player'
 require_relative 'board'
+require_relative 'computer'
+
 # $stdin.getch
 class Chess
 
+  attr_accessor :players, :board
+
   def initialize
     @board = Board.new
-    @players = [Player.new(:white), Player.new(:black)]
+    # @players = [ComputerPlayer.new(:black, self, @board), Player.new(:white)] #change this order later
+    @players = [Player.new(:white), ComputerPlayer.new(:black, self, @board)]
+
     @force_quit = false
   end
 
@@ -14,7 +20,7 @@ class Chess
     until game_over? || @force_quit
       render_board
       arr = in_check
-      select_and_move(arr)
+      @players[0].color == :white ? select_and_move(arr) : @players[0].select_and_move(arr)
       render_board
       switch_player
       break if one_king_dies?
