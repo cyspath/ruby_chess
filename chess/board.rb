@@ -9,6 +9,8 @@ class Board
     @grid = Array.new(8) {Array.new(8) {EmptySquare.new}}
     self.populate
     @cursor_pos = [0,0]
+    @white_captured_pieces = []
+    @black_captured_pieces = []
   end
 
   def render
@@ -42,6 +44,13 @@ class Board
 
       end
       print (" " + row_number.to_s + " ").colorize(:color => :light_black)
+
+      if row_number == 8
+        print convert_captured_array_to_str(@black_captured_pieces)
+      elsif row_number == 1
+        print convert_captured_array_to_str(@white_captured_pieces)
+      end
+
       row_number -= 1
       puts
     end
@@ -53,7 +62,9 @@ class Board
 
   end
 
-
+  def convert_captured_array_to_str(arr)
+    return arr.join("")
+  end
 
   def move!(start_pos, end_pos)
     if valid_move?(start_pos, end_pos)
@@ -62,11 +73,21 @@ class Board
       piece_to_move = current_piece(start_pos)
       target = current_piece(end_pos)
 
+      add_to_captured_collection(target)
+
       @grid[end_pos[0]][end_pos[1]] = piece_to_move
       @grid[start_pos[0]][start_pos[1]] = EmptySquare.new
       piece_to_move.current_position = end_pos
     else
       # raise StandardError
+    end
+  end
+
+  def add_to_captured_collection(target)
+    if target.color == :white
+      @black_captured_pieces.push(target.icon)
+    elsif target.color == :black
+      @white_captured_pieces.push(target.icon)
     end
   end
 

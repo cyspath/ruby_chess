@@ -1,3 +1,4 @@
+
 class ComputerPlayer
 
   attr_reader :color
@@ -10,31 +11,41 @@ class ComputerPlayer
 
 
   def select_and_move(arr)
-    delay = 2 + rand(2)
-    sleep delay
+    # delay = 1 + rand(2)
+    # sleep delay
     #  if not being checked
     if arr.nil? || arr.empty?
       all_computer_pieces = get_all_computer_pieces
 
-      print all_computer_pieces.map { |x| x.icon }
-      while true
+      pieces = all_computer_pieces
+      end_pos = nil
 
-        piece = all_computer_pieces.sample
-        puts "computer picked" + piece.icon
-
-        end_pos = piece.moves.sample
-
-        if @board.valid_move?(piece.current_position, end_pos)
-          @board.move!(piece.current_position, end_pos)
-          break
-        else
-          next
+      pieces.each do |piece|
+        @current_piece = piece
+        piece.moves.each do |pos|
+          target_piece = @board.current_piece(pos)
+          if target_piece.color != @color && !target_piece.empty? && @board.valid_move?(piece.current_position, pos)
+            end_pos = pos #pos of enemy piece in range
+            @selected_piece = @current_piece
+          end
         end
-
-
       end
 
+      while end_pos.nil?
+        @selected_piece = pieces.sample
+        rand_pos = @selected_piece.moves.sample
+        end_pos = rand_pos if @board.valid_move?(@selected_piece.current_position, rand_pos)
+      end
+
+      p end_pos
+      p @selected_piece.icon
+      p @selected_piece.current_position
+
+
+      @board.move!(@selected_piece.current_position, end_pos)
+      end_pos = nil;
     end
+
   end
 
 
