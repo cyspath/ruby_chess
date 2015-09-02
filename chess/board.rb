@@ -46,9 +46,9 @@ class Board
       print (" " + row_number.to_s + " ").colorize(:color => :light_black)
 
       if row_number == 8
-        print convert_captured_array_to_str(@black_captured_pieces)
+        print convert_captured_array_to_str(@black_captured_pieces).colorize(:color => :light_white)
       elsif row_number == 1
-        print convert_captured_array_to_str(@white_captured_pieces)
+        print convert_captured_array_to_str(@white_captured_pieces).colorize(:color => :light_white)
       end
 
       row_number -= 1
@@ -63,7 +63,7 @@ class Board
   end
 
   def convert_captured_array_to_str(arr)
-    return arr.join("")
+    return arr.join(" ")
   end
 
   def move!(start_pos, end_pos)

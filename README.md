@@ -1,4 +1,4 @@
 # Chess
 Playable, functional chess game, with implementation of cursors
 
-need to upload video
+![alt tag](https://raw.github.com/cyspath/Chess/master/chess.gif)
