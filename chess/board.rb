@@ -1,3 +1,4 @@
+#This is a test for clone, edit, and pull request
 require_relative 'emptysquare'
 require_relative 'piece'
 require 'colorize'
